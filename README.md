@@ -10,4 +10,4 @@
   
  *It is now possible to add a student with randomly generated grades and exam results
  
- *Added a funcionality to clear the screen
+ *Added a funcionality to clear the console screen
