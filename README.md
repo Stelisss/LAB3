@@ -1,17 +1,15 @@
 # LAB3
 
-v0.2 Release:
+v0.3 Release:
 
-1. Now possible to add student(s) from a .txt files.
+1. Now throws an error if you try to enter nothing in the homework and exam field.
 
-2. Merged the output windows. Now you can see different final points calculations (average and median) in the same output.
+2. Now throws an error if you try to add a student from .txt file with a bad format.
+
+3. Program now shows how many students were added from .txt file.
 
 
 
-v0.201 Release:
-
-1. Fixed the menu
- 
 
 
 
