@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -216,26 +218,26 @@ namespace ConsoleApp1
             sorted_Students = students.OrderBy(student => student.Surname).ToList();
 
             //checking if student list is empty, if yes throw error message, if no print the table.
-            if(sorted_Students.Count == 0)
+            if (sorted_Students.Count == 0)
             {
                 Console.WriteLine("No students found.");
             }
             else
             {
                 Console.WriteLine("\n");
-            Console.WriteLine("{0, -15} {1, -23} {2, -28} {3, -33}", "Surname", "Name", "Final points (Avg.)", "Final points (Med.)");
+                Console.WriteLine("{0, -15} {1, -23} {2, -28} {3, -33}", "Surname", "Name", "Final points (Avg.)", "Final points (Med.)");
 
-            for (int i = 0; i < 88; i++)
-            {
-                Console.Write("-");
-            }
+                for (int i = 0; i < 88; i++)
+                {
+                    Console.Write("-");
+                }
 
-            Console.WriteLine("\n");
+                Console.WriteLine("\n");
 
-            foreach (var student in sorted_Students)
-            {
-                Console.WriteLine("{0, -15} {1, -23} {2, -28} {3, -33}", student.Surname, student.Name, String.Format("{0:0.##}", 0.3 * Student.get_Average(student.Hw) + 0.7 * student.Exam), String.Format("{0:0.##}", 0.3 * Student.get_Median(student.Hw) + 0.7 * student.Exam));
-            }
+                foreach (var student in sorted_Students)
+                {
+                    Console.WriteLine("{0, -15} {1, -23} {2, -28} {3, -33}", student.Surname, student.Name, String.Format("{0:0.##}", 0.3 * Student.get_Average(student.Hw) + 0.7 * student.Exam), String.Format("{0:0.##}", 0.3 * Student.get_Median(student.Hw) + 0.7 * student.Exam));
+                }
 
             }
 
@@ -245,24 +247,24 @@ namespace ConsoleApp1
         public static Student from_Txt(string txt_Line)
         {
             try
-            { 
+            {
                 string[] values = txt_Line.Split(" ");
-            Student student = new Student();
-            List<int> grades = new List<int>();
-            student.name = values[0];
-            student.surname = values[1];
-            //hardcoded, so if getting data from file, student must have 5 homework
-            grades.Add(Convert.ToInt32(values[2]));
-            grades.Add(Convert.ToInt32(values[3]));
-            grades.Add(Convert.ToInt32(values[4]));
-            grades.Add(Convert.ToInt32(values[5]));
-            grades.Add(Convert.ToInt32(values[6]));
-            student.hw = grades;
+                Student student = new Student();
+                List<int> grades = new List<int>();
+                student.name = values[0];
+                student.surname = values[1];
+                //hardcoded, so if getting data from file, student must have 5 homework
+                grades.Add(Convert.ToInt32(values[2]));
+                grades.Add(Convert.ToInt32(values[3]));
+                grades.Add(Convert.ToInt32(values[4]));
+                grades.Add(Convert.ToInt32(values[5]));
+                grades.Add(Convert.ToInt32(values[6]));
+                student.hw = grades;
 
-            student.exam = Convert.ToInt32(values[7]);
-            return student;
+                student.exam = Convert.ToInt32(values[7]);
+                return student;
 
-            }catch (FormatException e)
+            } catch (FormatException e)
             {
                 Console.WriteLine("There was a problem with the format of the data in the file");
                 Student student = new Student();
@@ -278,7 +280,92 @@ namespace ConsoleApp1
 
         }
 
+        public static void random_Generation(int amount)
+        {
+
+            List<Student> students = new List<Student>();
+          
+                for (int i = 0; i < amount; i++)
+                {
+                    Student student = new Student();
+                    student.name = get_random_name(amount);
+                    student.surname = get_random_surname(amount);
+                    student.hw = get_random_hw_list();
+                    student.exam = get_random_exam();
+                    students.Add(student);
+                }
+            Write_to_csv(students, amount);
+
+
+        }
+            public static List<int> get_random_hw_list()
+            {
+                List<int> HW = new List<int>();
+                int rand_cycle = rand.Next(Constants.MIN, Constants.MAX);
+                for (int i = 0; i <= rand_cycle; i++)
+                {
+                    HW.Add(rand.Next(Constants.MIN, Constants.MAX));
+                }
+                return HW;
+            }
+
+        public static void Write_to_csv(List<Student> students, int amount)
+        {
+            Stopwatch timer = new Stopwatch();
+            timer.Restart();
+
+            List<Student> sorted_Students = new List<Student>();
+            sorted_Students = students.OrderBy(student => student.Surname).ToList();
+
+            var failed_txt = new StringBuilder();
+            var passed_txt = new StringBuilder();
+
+            failed_txt.Append(Constants.HEADER + "\n");
+            passed_txt.Append(Constants.HEADER + "\n");
+
+            foreach (Student student in sorted_Students)
+            {
+                if((0.3 * Student.get_Average(student.Hw) + 0.7 * student.Exam) < 5)
+                {
+                    var newline = string.Format("{1} {0} {2}", student.Name, student.Surname, String.Format("{0:0.##}", 0.3 * Student.get_Average(student.Hw) + 0.7 * student.Exam));
+                    failed_txt.AppendLine(newline);
+
+                }
+                else
+                {
+                    var newline = string.Format("{1} {0} {2}", student.Name, student.Surname, String.Format("{0:0.##}", 0.3 * Student.get_Average(student.Hw) + 0.7 * student.Exam));
+                    passed_txt.AppendLine(newline);
+                }
+            }
+
+            File.WriteAllText("Failed_students" + amount + ".txt", failed_txt.ToString());
+            File.WriteAllText("Passed_students" + amount + ".txt", passed_txt.ToString());
+
+            timer.Stop();
+            Console.WriteLine("Time elapsed to generate {0} students: {1}\n", amount, timer.Elapsed);
+        }
+
+        public static string get_random_name(int amount)
+        {
+            return "Name" + rand.Next(amount);
+        }
+
+
+        public static string get_random_surname(int amount)
+        {
+            return "Surname" + rand.Next(amount);
+        }
+
+        public static int get_random_exam()
+        {
+            return rand.Next(Constants.MIN, Constants.MAX);
+        }
+
+        }
+
+
+    
     }
-}
+
 
 

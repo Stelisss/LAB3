@@ -8,6 +8,6 @@ namespace ConsoleApp1
     {
         public const int MIN = 1;
         public const int MAX = 10;
-        public const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        public const string HEADER = "SURNAME NAME FINAL_POINTS ";
     }
 }

@@ -13,12 +13,6 @@ namespace ConsoleApp1
         {
             List<Student> students = new List<Student>();
 
-
-
-
-
-
-
             int case_Switch;
             do
             {
@@ -27,7 +21,9 @@ namespace ConsoleApp1
                 Console.WriteLine("3. Add a student with random grades and exam results ");
                 Console.WriteLine("4. Add a student(s) from a .txt file ");
                 Console.WriteLine("5. Clear the screen. ");
-                Console.WriteLine("6. Exit the program. ");
+                Console.WriteLine("6. Generate many students. ");
+                Console.WriteLine("7. Exit the program. ");
+
                 Console.WriteLine("");
                 Console.Write("What would You like to do? ");
                 case_Switch = int.Parse(Console.ReadLine());
@@ -65,10 +61,16 @@ namespace ConsoleApp1
                         Console.Clear();
                         break;
                     case 6:
+                        Student.random_Generation(10000);
+                        Student.random_Generation(100000);
+                        Student.random_Generation(1000000);
+                        Student.random_Generation(10000000);
+                        break;
+                    case 7:
                         break;
 
                 }
-            } while (case_Switch != 6);
+            } while (case_Switch != 7);
 
 
         }
