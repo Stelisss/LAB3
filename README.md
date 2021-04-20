@@ -9,7 +9,7 @@ v0.3 Release:
 3. Program now shows how many students were added from .txt file.
 
 
+v0.301 Release:
 
-
-
+1. Throws an error if .txt file is not found.
 
