@@ -1,3 +1,4 @@
+#format is surname name HW1 HW2 HW3 HW4 HW5 Exam
 Surname Name HW1 HW2 HW3 HW4 HW5 Exam
 Tomas Tomauskas 10 5 4 8 4 8	
 Romas Rokauskas 6 7 7 4 10 7				

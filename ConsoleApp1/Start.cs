@@ -47,8 +47,15 @@ namespace ConsoleApp1
                         Console.WriteLine("\n");
                         break;
                     case 4:
-
-                        students = File.ReadAllLines("C:\\Users\\justa\\source\\repos\\ConsoleApp1\\ConsoleApp1\\students.txt").Skip(1).Select(Student.from_Txt).ToList();
+                        try
+                        {
+                            students = File.ReadAllLines("C:\\Users\\justa\\source\\repos\\ConsoleApp1\\ConsoleApp1\\students.txt").Skip(2).Select(Student.from_Txt).ToList();
+                        }catch (FileNotFoundException e)
+                        
+                            {
+                            Console.WriteLine("File not found");
+                        }
+                        
                         students.RemoveAll(r => r.Name == "0");
 
                         Console.WriteLine("Added {0} student(s) from the file", students.Count());
