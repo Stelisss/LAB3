@@ -1,6 +1,6 @@
 # LAB3
 
-0.1 release:
+v0.1 release:
 
   1. Added a possibility to add a student
 
