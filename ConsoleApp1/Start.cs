@@ -12,7 +12,6 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             List<Student> students = new List<Student>();
-            LinkedList<Student> students_Linked_list = new LinkedList<Student>();
 
             int case_Switch;
             do
@@ -20,7 +19,7 @@ namespace ConsoleApp1
                 Console.WriteLine("1. Add a student ");
                 Console.WriteLine("2. Show students table ");
                 Console.WriteLine("3. Add a student with random grades and exam results ");
-                Console.WriteLine("4. Add student(s) from a .txt file ");
+                Console.WriteLine("4. Add a student(s) from a .txt file ");
                 Console.WriteLine("5. Clear the screen. ");
                 Console.WriteLine("6. Generate many students. ");
                 Console.WriteLine("7. Exit the program. ");

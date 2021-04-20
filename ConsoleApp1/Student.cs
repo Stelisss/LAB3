@@ -22,20 +22,9 @@ namespace ConsoleApp1
         public List<int> Hw { get => hw; set => hw = value; }
         public int Exam { get => exam; set => exam = value; }
 
-        public Student() { }
-
-        public Student(string Name, string Surname, List<int> Hw, int Exam)
-        {
-            name = Name;
-            surname = Surname;
-            hw = Hw; ;
-            exam = Exam;
-            }
 
         public static Student create_Student(bool if_random = false)
         {
-
-
             Student student = new Student();
 
 
@@ -78,7 +67,7 @@ namespace ConsoleApp1
             {
                 if (if_random == true)
                 {
-                    student.exam = get_random_exam();
+                    student.exam = rand.Next(Constants.MIN, Constants.MAX);
                 }
                 else
                 {
@@ -124,8 +113,12 @@ namespace ConsoleApp1
             bool cycle = true;
             if (if_random == true)
             {
-
-                return get_random_hw_list();
+                int rand_cycle = rand.Next(Constants.MIN, Constants.MAX);
+                for (int i = 0; i <= rand_cycle; i++)
+                {
+                    HW.Add(rand.Next(Constants.MIN, Constants.MAX));
+                }
+                return HW;
 
             }
             else
@@ -163,6 +156,7 @@ namespace ConsoleApp1
                         {
                             Console.WriteLine("Grade should be between 1 and 10.");
                         }
+                        //!!! neet to fix exception, make message more clear
 
                     }
                     catch (FormatException e)
@@ -270,8 +264,7 @@ namespace ConsoleApp1
                 student.exam = Convert.ToInt32(values[7]);
                 return student;
 
-            }
-            catch (FormatException e)
+            } catch (FormatException e)
             {
                 Console.WriteLine("There was a problem with the format of the data in the file");
                 Student student = new Student();
@@ -291,21 +284,30 @@ namespace ConsoleApp1
         {
 
             List<Student> students = new List<Student>();
-
-            for (int i = 0; i < amount; i++)
-            {
-                Student student = new Student();
-                student.name = get_random_name(amount);
-                student.surname = get_random_surname(amount);
-                student.hw = get_random_hw_list();
-                student.exam = get_random_exam();
-                students.Add(student);
-            }
+          
+                for (int i = 0; i < amount; i++)
+                {
+                    Student student = new Student();
+                    student.name = get_random_name(amount);
+                    student.surname = get_random_surname(amount);
+                    student.hw = get_random_hw_list();
+                    student.exam = get_random_exam();
+                    students.Add(student);
+                }
             Write_to_csv(students, amount);
 
 
         }
-
+            public static List<int> get_random_hw_list()
+            {
+                List<int> HW = new List<int>();
+                int rand_cycle = rand.Next(Constants.MIN, Constants.MAX);
+                for (int i = 0; i <= rand_cycle; i++)
+                {
+                    HW.Add(rand.Next(Constants.MIN, Constants.MAX));
+                }
+                return HW;
+            }
 
         public static void Write_to_csv(List<Student> students, int amount)
         {
@@ -323,7 +325,7 @@ namespace ConsoleApp1
 
             foreach (Student student in sorted_Students)
             {
-                if ((0.3 * Student.get_Average(student.Hw) + 0.7 * student.Exam) < 5)
+                if((0.3 * Student.get_Average(student.Hw) + 0.7 * student.Exam) < 5)
                 {
                     var newline = string.Format("{1} {0} {2}", student.Name, student.Surname, String.Format("{0:0.##}", 0.3 * Student.get_Average(student.Hw) + 0.7 * student.Exam));
                     failed_txt.AppendLine(newline);
@@ -354,26 +356,14 @@ namespace ConsoleApp1
             return "Surname" + rand.Next(amount);
         }
 
-        public static List<int> get_random_hw_list()
-        {
-            List<int> HW = new List<int>();
-            int rand_cycle = rand.Next(Constants.MIN, Constants.MAX);
-            for (int i = 0; i <= rand_cycle; i++)
-            {
-                HW.Add(rand.Next(Constants.MIN, Constants.MAX));
-            }
-            return HW;
-        }
-
         public static int get_random_exam()
         {
             return rand.Next(Constants.MIN, Constants.MAX);
         }
 
+        }
 
 
-
-    }
     
     }
 
