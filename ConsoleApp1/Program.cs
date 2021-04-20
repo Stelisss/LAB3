@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace ConsoleApp1
@@ -207,42 +208,44 @@ namespace ConsoleApp1
             }
         }
 
-        public static void formated_Print(List<Student> students, string med_or_avg)
+        public static void formated_Print(List<Student> students)
         {
-            if(med_or_avg == "average")
-            {
+            List<Student> sorted_Students = new List<Student>();
+            sorted_Students = students.OrderBy(student => student.Surname).ToList();
+            
                 Console.WriteLine("\n");
-                Console.WriteLine("{0, -15} {1, -23} {2, -28}", "Surname", "Name", "Final points (Avg.)");
+                Console.WriteLine("{0, -15} {1, -23} {2, -28} {3, -33}", "Surname", "Name", "Final points (Avg.)", "Final points (Med.)");
 
-                for(int i = 0; i < 59; i++)
+                for(int i = 0; i < 88; i++)
                 {
                     Console.Write("-");
                 }
 
                 Console.WriteLine("\n");
 
-                foreach (var student in students)
+                foreach (var student in sorted_Students)
                 {
-                    Console.WriteLine("{0, -15} {1, -23} {2, -28}", student.Surname, student.Name, String.Format("{0:0.##}", 0.3 * Student.get_Average(student.Hw) + 0.7));
+                    Console.WriteLine("{0, -15} {1, -23} {2, -28} {3, -33}", student.Surname, student.Name, String.Format("{0:0.##}", 0.3 * Student.get_Average(student.Hw) + 0.7 * student.Exam), String.Format("{0:0.##}", 0.3 * Student.get_Median(student.Hw) + 0.7 * student.Exam));
                 }
-            }
-            else if(med_or_avg == "median")
-            {
-                Console.WriteLine("\n");
-                Console.WriteLine("{0, -15} {1, -23} {2, -28}", "Surname", "Name", "Final points (Med.)");
+            
+        }
 
-                for (int i = 0; i < 59; i++)
-                {
-                    Console.Write("-");
-                }
+        public static Student from_Txt(string txt_Line)
+        {
+            string[] values = txt_Line.Split(" ");
+            Student student = new Student();
+            List<int> grades = new List<int>();
+            student.name = values[0];
+            student.surname = values[1];
+            grades.Add(Convert.ToInt32(values[2]));
+            grades.Add(Convert.ToInt32(values[3]));
+            grades.Add(Convert.ToInt32(values[4]));
+            grades.Add(Convert.ToInt32(values[5]));
+            grades.Add(Convert.ToInt32(values[6]));
+            student.hw = grades;
 
-                Console.WriteLine("\n");
-
-                foreach (var student in students)
-                {
-                    Console.WriteLine("{0, -15} {1, -23} {2, -28}", student.Surname, student.Name, String.Format("{0:0.##}", 0.3 * Student.get_Median(student.Hw) + 0.7));
-                }
-            }
+            student.exam = Convert.ToInt32(values[7]);
+            return student;
         }
     }
     class Program
@@ -264,8 +267,9 @@ namespace ConsoleApp1
                 Console.WriteLine("2. Show Final Points (calculated using average) ");
                 Console.WriteLine("3. Show Final Points (calculated using median) ");
                 Console.WriteLine("4. Add a student with random grades and exam results ");
-                Console.WriteLine("5. Clear the screen. ");
-                Console.WriteLine("6. Exit the program. ");
+                Console.WriteLine("5. Add a student(s) from a .txt file ");
+                Console.WriteLine("6. Clear the screen. ");
+                Console.WriteLine("7. Exit the program. ");
                 Console.WriteLine("");
                 Console.Write("What would You like to do? ");
                 case_Switch = int.Parse(Console.ReadLine());
@@ -276,21 +280,24 @@ namespace ConsoleApp1
                         break;
 
                     case 2:
-                        Student.formated_Print(students, "average");
+                        Student.formated_Print(students);
                         break;
                     case 3:
-                        Student.formated_Print(students, "median");
+
                         break;
                     case 4:
                         students.Add(Student.create_Student(true));
                         break;
                     case 5:
-                        Console.Clear();
+                        students = File.ReadAllLines("C:\\Users\\justa\\source\\repos\\ConsoleApp1\\ConsoleApp1\\students.txt").Skip(1).Select(Student.from_Txt).ToList();
                         break;
                     case 6:
+                        Console.Clear();
+                        break;
+                    case 7:
                         break;
                 }
-            } while (case_Switch != 6);
+            } while (case_Switch != 7);
 
 
         }
