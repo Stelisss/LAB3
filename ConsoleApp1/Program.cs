@@ -264,12 +264,11 @@ namespace ConsoleApp1
             do
             {
                 Console.WriteLine("1. Add a student ");
-                Console.WriteLine("2. Show Final Points (calculated using average) ");
-                Console.WriteLine("3. Show Final Points (calculated using median) ");
-                Console.WriteLine("4. Add a student with random grades and exam results ");
-                Console.WriteLine("5. Add a student(s) from a .txt file ");
-                Console.WriteLine("6. Clear the screen. ");
-                Console.WriteLine("7. Exit the program. ");
+                Console.WriteLine("2. Show students table ");
+                Console.WriteLine("3. Add a student with random grades and exam results ");
+                Console.WriteLine("4. Add a student(s) from a .txt file ");
+                Console.WriteLine("5. Clear the screen. ");
+                Console.WriteLine("6. Exit the program. ");
                 Console.WriteLine("");
                 Console.Write("What would You like to do? ");
                 case_Switch = int.Parse(Console.ReadLine());
@@ -277,27 +276,29 @@ namespace ConsoleApp1
                 {
                     case 1:
                         students.Add(Student.create_Student());
+                        Console.WriteLine("\n");
                         break;
 
                     case 2:
                         Student.formated_Print(students);
+                        Console.WriteLine("\n");
                         break;
                     case 3:
-
+                        students.Add(Student.create_Student(true));
+                        Console.WriteLine("\n");
                         break;
                     case 4:
-                        students.Add(Student.create_Student(true));
+                        students = File.ReadAllLines("C:\\Users\\justa\\source\\repos\\ConsoleApp1\\ConsoleApp1\\students.txt").Skip(1).Select(Student.from_Txt).ToList();
+                        Console.WriteLine("\n");
                         break;
                     case 5:
-                        students = File.ReadAllLines("C:\\Users\\justa\\source\\repos\\ConsoleApp1\\ConsoleApp1\\students.txt").Skip(1).Select(Student.from_Txt).ToList();
-                        break;
-                    case 6:
                         Console.Clear();
                         break;
-                    case 7:
+                    case 6:
                         break;
+
                 }
-            } while (case_Switch != 7);
+            } while (case_Switch != 6);
 
 
         }
